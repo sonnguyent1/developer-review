@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Tw333t</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <link rel="shortcut icon" href="//abs.twimg.com/favicons/twitter.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/my_style.css') }}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="{{ url_for('static', filename='js/myApp.js') }}"></script>
+</head>
+
+<body>
+  <div class="container-fluid my-pannel">
+    <h1>Tw33t</h1>
+  </div>
+  <div class="container" id="myApp">
+    <form class="form-inline">
+
+      <label for="textInput">https://twitter.com/</label>
+      <input v-model="handleText" type="text" class="form-control form-control-lg" placeholder="Input a Twitter handle"
+        id="textInput" name="textInput" v-bind:class="{'is-invalid': (errors && errors.length > 0)}">
+      <button type="button" class="btn btn-primary btn-lg" v-bind:class="{disabled: buttonDisabled}"
+        v-on:click="btnClickHandler">
+        Get tweets
+      </button>
+
+    </form>
+
+    <div class="panel" v-if="tweets.length > 0 || errors.length > 0">
+      <div class="panel-heading">
+        <h3 class="panel-title">Tweets</h3>
+      </div>
+      <div class="alert alert-danger fade show" v-if="errors.length > 0" v-for="err in errors">
+        <strong>Error!</strong> [[err]]
+      </div>
+      <div class="panel-body">
+        <ul class="list-group list-group-dividered list-group-full">
+          <li v-for="tweet in tweets" class="list-group-item">
+            <div class="media">
+              <div class="media-left">
+                <a class="avatar avatar-online" href="javascript:void(0)">
+                  <img v-bind:src="tweet.photo" alt="...">
+                  <i></i>
+                </a>
+              </div>
+              <div class="media-body">
+                <small class="text-muted pull-right">[[tweet.created_at]]</small>
+                <h4 class="media-heading">@[[tweet.name]]</h4>
+                <div>[[tweet.text]]</div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+        <span class="fa fa-spinner fa-spin fa-3x"></span>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
